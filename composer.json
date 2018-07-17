@@ -1,0 +1,24 @@
+{
+    "name": "liuliansen/amq-consumer",
+    "description": "基于Workerman以进程形式运行的amq消费者框架",
+    "authors": [
+        {
+            "name": "liansen",
+            "email": "liansen@d3zz.com"
+        }
+    ],
+    "require": {
+        "workerman/workerman": "^3.5",
+        "php-amqplib/php-amqplib": "^2.7",
+        "liuliansen/utils": "^1.4"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "secure-http":false
+    },
+    "autoload": {
+        "psr-4": {
+            "amqconsumer\\": "./"
+        }
+    }
+}
