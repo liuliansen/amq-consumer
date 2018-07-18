@@ -9,6 +9,8 @@
 namespace amqconsumer\lib;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+use utils\Logger;
 
 /**
  * 消息消费者基类
@@ -16,6 +18,37 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
  */
 abstract class Consumer implements AMQProcessor
 {
+    /**
+     * 日志记录路径
+     * @var string
+     */
+    protected $logPath = '';
+    /**
+     * @var Logger
+     */
+    protected $logger = null;
+
+    public function __construct()
+    {
+        $this->logger = new Logger(['path' => $this->logPath]);
+    }
+
+    /**
+     * 记录错误
+     * @param string|\Throwable $error
+     * @param AMQPMessage $message
+     */
+    public function error($error,AMQPMessage $message)
+    {
+        if($error instanceof \Throwable){
+            $error = $error->getMessage().PHP_EOL.'message body: '.$message->getBody().PHP_EOL.
+                $error->getTraceAsString();
+        }else{
+            $error = $error.PHP_EOL.'message body: '.$message->getBody().PHP_EOL;
+        }
+        $this->logger->error($error);
+    }
+
     /**
      * @see AMQProcessor::run()
      */
