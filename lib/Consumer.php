@@ -75,6 +75,7 @@ abstract class Consumer implements AMQProcessor
                 }catch (\Throwable $e){
                     //让消息回到队列
                     $msg->delivery_info['channel']->basic_nack($msg->delivery_info['delivery_tag'],false,true);
+                    $this->error($e, $msg);
                 }
             });
         while (true){
